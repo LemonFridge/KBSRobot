@@ -1,0 +1,82 @@
+#define S0 4
+#define S1 5
+#define S2 6
+#define S3 7
+#define sensorOut 8
+#define L1 A0
+#define L2 A1
+#define L3 A2
+
+int lijn1_BreakPoint = 900;
+int lijn2_BreakPoint = 900;
+int lijn3_BreakPoint = 900;
+int hoogte;
+
+int redfrequency = 0;
+int bluefrequency = 0;
+
+
+void setup() {
+  pinMode(S0, OUTPUT);
+  pinMode(S1, OUTPUT);
+  pinMode(S2, OUTPUT);
+  pinMode(S3, OUTPUT);
+  pinMode(sensorOut, INPUT);
+  pinMode(L1, OUTPUT);
+  pinMode(L2, OUTPUT);
+  pinMode(L3, OUTPUT);
+
+
+  // Setting frequency-scaling to 20%
+  digitalWrite(S0, HIGH);
+  digitalWrite(S1, LOW);
+  Serial.begin(9600);
+}
+void loop() {
+  // Setting red filtered photodiodes to be read
+  digitalWrite(S2, LOW);
+  digitalWrite(S3, LOW);
+  // Reading the output frequency
+  redfrequency = pulseIn(sensorOut, LOW);
+  // Printing the value on the serial monitor
+  Serial.print("R= ");//printing name
+  Serial.print(redfrequency);//printing RED color frequency
+  Serial.print("  ");
+  delay(10);
+
+
+  // Setting Blue filtered photodiodes to be read
+  digitalWrite(S2, LOW);
+  digitalWrite(S3, HIGH);
+  // Reading the output frequency
+  bluefrequency = pulseIn(sensorOut, LOW);
+  // Printing the value on the serial monitor
+  Serial.print("B= ");//printing name
+  Serial.print(bluefrequency);//printing BlUE color frequency
+  Serial.println("  ");
+  delay(10);
+
+
+  if ((digitalRead(L1) > lijn1_BreakPoint) && (digitalRead(L2) < lijn2_BreakPoint) && (digitalRead(L3) < lijn3_BreakPoint)) {  // Checks if only linesensor 1 is triggered.
+    hoogte = 1; 
+    Serial.println(hoogte); // Sends height to the Java Application
+  }
+  if ((digitalRead(L1) > lijn1_BreakPoint) && (digitalRead(L2) > lijn2_BreakPoint) && (digitalRead(L3) < lijn3_BreakPoint)) { // Checks if linesensors 1 and 2 are triggered.
+    hoogte = 2;
+    Serial.println(hoogte);
+  }
+  if ((digitalRead(L1) > lijn1_BreakPoint) && (digitalRead(L2) > lijn2_BreakPoint) && (digitalRead(L3) > lijn3_BreakPoint)) { // Checks if all linesensors are triggered. 
+    hoogte = 3;
+    Serial.println(hoogte);
+  }
+  if (redfrequency < 600) {
+    Serial.println("ROOD");
+    delay(1000);
+  }
+
+  if (bluefrequency < 600) {
+    Serial.println("BLAUW");
+    delay(1000);
+  }
+
+}
