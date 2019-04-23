@@ -53,7 +53,7 @@ void loop() {
 
   }
   
-  if (Status == '1') {
+  if (Status == 1) {
     if (i < 1) {
       analogWrite(motorsnelheid, 210);
       digitalWrite(motorrichting, HIGH);
@@ -98,7 +98,7 @@ void loop() {
     }
 
   }
-  if (Status == '2') {
+  if (Status == 2) {
     analogWrite(motorsnelheid, 0);
     digitalWrite(motorrichting, HIGH);
     i = 0;
