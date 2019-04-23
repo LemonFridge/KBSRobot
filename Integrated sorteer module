@@ -18,7 +18,7 @@ int lijn3_BreakPoint = 900;
 int hoogte;
 int redfrequency = 0;
 int bluefrequency = 0;
-int Status;
+byte Status;
 int i;
 
 Servo servo;
@@ -50,10 +50,10 @@ void setup() {
 void loop() {
   if (Serial.available() > 0) {
     Status = Serial.read();
+
   }
-
-
-  if (Status == 1) {
+  
+  if (Status == '1') {
     if (i < 1) {
       analogWrite(motorsnelheid, 210);
       digitalWrite(motorrichting, HIGH);
@@ -98,7 +98,7 @@ void loop() {
     }
 
   }
-  if (Status == 2) {
+  if (Status == '2') {
     analogWrite(motorsnelheid, 0);
     digitalWrite(motorrichting, HIGH);
     i = 0;
