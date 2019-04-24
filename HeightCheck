@@ -1,0 +1,50 @@
+#define L1 A1
+#define L2 A2
+#define L3 A3
+int lijn1_BreakPoint = 500;
+int lijn2_BreakPoint = 500;
+int lijn3_BreakPoint = 500;
+int hoogte;
+
+int value1 = 0;
+int value2 = 0;
+int value3 = 0;
+
+void setup() {
+  // put your setup code here, to run once:
+  Serial.begin(9600);
+
+  pinMode(A1, INPUT);
+  pinMode(A2, INPUT);
+  pinMode(A3, INPUT);
+  
+
+}
+
+void loop() {
+
+  //Serial.println(analogRead(A1));
+  //Serial.println(analogRead(A2));
+  //Serial.println(analogRead(A3));
+  //Serial.println(" ");
+  //delay(1000);
+
+ 
+  if ((analogRead(L1) > lijn1_BreakPoint) && (analogRead(L2) > lijn2_BreakPoint) && (analogRead(L3) < lijn3_BreakPoint)) {  // Checks if only linesensor 1 is triggered.
+    hoogte = 1;
+    Serial.println(hoogte); // Sends height to the Java Application
+    delay(1000);
+  }
+  if ((analogRead(L1) > lijn1_BreakPoint) && (analogRead(L2) < lijn2_BreakPoint) && (analogRead(L3) < lijn3_BreakPoint)) { // Checks if linesensors 1 and 2 are triggered.
+    hoogte = 2;
+    Serial.println(hoogte);
+    delay(1000);
+  }
+  if ((analogRead(L1) < lijn1_BreakPoint) && (analogRead(L2) < lijn2_BreakPoint) && (analogRead(L3) < lijn3_BreakPoint)) { // Checks if all linesensors are triggered.
+    hoogte = 3;
+    Serial.println(hoogte);
+    delay(1000);
+  }
+
+
+}
