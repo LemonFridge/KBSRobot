@@ -83,14 +83,14 @@ void loop() {
 
     delay(10);
 
-    if ((redfrequency > 0) && (redfrequency < 6000)) {
+    if ((redfrequency > 0) && (redfrequency < 2000)) {
       Serial.println("1");
       tone(speaker, 1000, 500);
       servo.write(50);
       delay(1000);
     }
 
-    if ((bluefrequency < 5000 ) && (redfrequency > 7000) && (bluefrequency > 0)) {
+    if ((bluefrequency < 2800 ) && (redfrequency > 1500)) {
       Serial.println("2");
       tone(speaker, 1000, 500);
       servo.write(120);
