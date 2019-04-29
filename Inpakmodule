@@ -1,1 +1,154 @@
+// Include the Servo library
+#include <Servo.h>
 
+int motorsnelheid1 = 4;
+int motorrichting1 = 5;
+int motorsnelheid2 = 6;
+int motorrichting2 = 7;
+
+int L1 = A1;
+int L2 = A2;
+int L3 = A3;
+
+int lijn1_BreakPoint = 500;
+int lijn2_BreakPoint = 500;
+int lijn3_BreakPoint = 500;
+
+int servoPin1 = 13;
+int servoPin2 = 12;
+
+Servo Servo1;
+Servo Servo2;
+
+byte blok;
+char blokKleur; // Als het nummer van de Java Applicatie voor servoKleur 1 is, is de kleur blauw. Als het 2 is, is de kleur rood.
+byte Status;
+
+byte doos1B;
+byte doos2B;
+byte doos1R;
+byte doos2R;
+
+boolean signaal;
+boolean scanning;
+
+void setup() {
+  Servo1.attach(servoPin1);
+  Servo2.attach(servoPin2);
+  Serial.begin(9600);
+
+  Servo1.write(65);
+  Servo2.write(65);
+
+  pinMode(A1, INPUT);
+  pinMode(A2, INPUT);
+  pinMode(A3, INPUT);
+}
+
+void scan () {
+
+  //scanning logic here
+  
+  // call after succesful scan binPacking();
+
+}
+
+
+void loop() {
+
+  if (scanning) {
+
+    scan();
+
+  }
+
+  if (Serial.available() > 0) {
+
+    Status = Serial.read();
+
+    if (signaal) {
+      byte maximaal = Serial.read();
+      doos1B = maximaal;
+      doos2B = maximaal;
+      doos1R = maximaal;
+      doos2R = maximaal;
+      signaal = false;
+      Serial.println(maximaal);
+    }
+
+    else if (Status == 1) {
+      analogWrite(motorsnelheid1, 210);
+      digitalWrite(motorrichting1, HIGH);
+      analogWrite(motorsnelheid2, 210);
+      digitalWrite(motorrichting2, HIGH);
+      scanning = true;
+    }
+
+
+    else if (Status == 2) {
+      analogWrite(motorsnelheid1, 0);
+      digitalWrite(motorrichting1, LOW);
+      analogWrite(motorsnelheid2, 0);
+      digitalWrite(motorrichting2, LOW);
+      scanning = false;
+    }
+
+    else if (Status == 3) { //Kleur is blauw
+      blokKleur = 1;
+    }
+    else if (Status == 4) { //Kleur is rood
+      blokKleur = 2;
+    }
+
+    else if (Status == 5) { //Grootte van het blok
+      signaal = true;
+    }
+  }
+}
+
+
+void binPacking() {
+
+  if (blokKleur == '1') { 
+
+    if (doos1B - blok >= 0) {
+
+       doos1B = doos1B - blok;
+      Servo1.write(0);  
+      Serial.println("6"); // doos1 rood ++
+      
+    } else if (doos2B - blok >= 0) {
+
+      doos2B = doos2B - blok;
+      Servo1.write(45); 
+      Serial.println("7"); // doos2 rood ++
+
+    } else { 
+    
+      Serial.println("4"); //dozen blauw zijn vol
+      
+    }
+
+  } else { 
+
+    if (doos1R - blok >= 0) {
+
+      doos1R = doos1R - blok;
+      Servo2.write(45);  
+
+      Serial.println("8"); // doos 1 blauw ++
+
+    } else if (doos2R - blok >= 0) {
+
+      doos2R = doos2R - blok;
+      Servo2.write(0);  
+
+      Serial.println("9"); //doos 2 blauw ++
+
+    } else { 
+      
+      Serial.println("5"); //dozen rood zijn vol
+      
+    }
+  }
+}
