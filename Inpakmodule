@@ -73,6 +73,7 @@ void loop() {
       digitalWrite(motorrichting1, HIGH);
       analogWrite(motorsnelheid2, 210);
       digitalWrite(motorrichting2, HIGH);
+      Serial.println("0");
       scanning = true;
     }
 
@@ -83,6 +84,7 @@ void loop() {
       analogWrite(motorsnelheid2, 0);
       digitalWrite(motorrichting2, LOW);
       scanning = false;
+      Serial.println("0");
     }
 
     else if (Status == 3) { //color blue
@@ -101,7 +103,7 @@ void loop() {
 void scan () {
 
   //scanning logic here
-  
+  Serial.println("0");
   // call after succesful scan binPacking();
 
 }
