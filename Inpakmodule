@@ -45,15 +45,6 @@ void setup() {
   pinMode(A3, INPUT);
 }
 
-void scan () {
-
-  //scanning logic here
-  
-  // call after succesful scan binPacking();
-
-}
-
-
 void loop() {
 
   if (scanning) {
@@ -104,6 +95,14 @@ void loop() {
       signaal = true;
     }
   }
+}
+
+void scan () {
+
+  //scanning logic here
+  
+  // call after succesful scan binPacking();
+
 }
 
 
