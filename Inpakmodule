@@ -6,6 +6,10 @@ int motorrichting1 = 5;
 int motorsnelheid2 = 6;
 int motorrichting2 = 7;
 
+int trigPin = 2;    // Trigger Ultrasoon
+int echoPin = 3;    // Echo Ultrasoon
+long duration, ultrasoon;
+
 int L1 = A1;
 int L2 = A2;
 int L3 = A3;
@@ -45,6 +49,9 @@ void setup() {
   pinMode(A1, INPUT);
   pinMode(A2, INPUT);
   pinMode(A3, INPUT);
+
+  pinMode(trigPin, OUTPUT);
+  pinMode(echoPin, INPUT);
 }
 
 void loop() {
@@ -102,15 +109,42 @@ void loop() {
 
 void scan () {
 
+  // The sensor is triggered by a HIGH pulse of 10 or more microseconds.
+  // Give a short LOW pulse beforehand to ensure a clean HIGH pulse:
+  digitalWrite(trigPin, LOW);
+  delay(5);
+  digitalWrite(trigPin, HIGH);
+  delay(10);
+  digitalWrite(trigPin, LOW);
+
+  duration = pulseIn(echoPin, HIGH);
+
+  // Convert the time into a distance
+  ultrasoon = (duration / 2) ;
+  
+  //Serial.print(ultrasoon);
+  
+   if (ultrasoon < 115) {
+    Serial.println("3");//blok is 3 hoog
+    blok = 3;
+    binPacking();
+  } else if (ultrasoon < 150 && ultrasoon > 115) {
+    Serial.println("2"); //blok is 2 hoog
+    blok = 2;
+    binPacking();
+  } else if((ultrasoon > 150 && blokKleur == '1') || (ultrasoon > 150 && blokKleur == '2')){
+    Serial.println("1"); //blok is 1 hoog
+    blok = 1;
+    binPacking();
+  }
+  
   //scanning logic here
-  Serial.println("0");
   // call after succesful scan binPacking();
 
 }
 
 
 void binPacking() {
-
   if (blokKleur == '1') { 
 
     if (doos1B - blok >= 0) {
@@ -152,5 +186,8 @@ void binPacking() {
       Serial.println("5"); //dozen rood zijn vol
       
     }
-  }
+  }  
+  blok = 0;
+  blokKleur = 0;
+  delay(250);
 }
