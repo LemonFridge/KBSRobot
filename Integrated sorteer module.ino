@@ -51,6 +51,7 @@ void loop() {
   if (Serial.available() > 0) {
     Status = Serial.read();
 
+
   }
   
   if (Status == 1) {
@@ -66,8 +67,8 @@ void loop() {
     digitalWrite(S3, LOW);
     // Reading the output frequency
     redfrequency = pulseIn(sensorOut, LOW);
-    //Serial.print("R ");
-    //Serial.print(redfrequency);
+    Serial.print(" R ");
+    Serial.print(redfrequency);
     // Printing the value on the serial monitor
     delay(10);
 
@@ -77,22 +78,22 @@ void loop() {
     digitalWrite(S3, HIGH);
     // Reading the output frequency
     bluefrequency = pulseIn(sensorOut, LOW);
-    //Serial.println(" B ");
-    // Serial.print(bluefrequency);
+    Serial.println(" B ");
+     Serial.println(bluefrequency);
     // Printing the value on the serial monitor
 
     delay(10);
 
-      if ((redfrequency > 0) && (redfrequency < 1900)) {
+    if ((redfrequency > 0) && (redfrequency < 1900)) {
       Serial.println("1");
-     // tone(speaker, 1000, 500);
+      tone(speaker, 1000, 500);
       servo.write(50);
       delay(1000);
     }
 
     if ((bluefrequency < 2600 ) && (redfrequency > 2400)) {
       Serial.println("2");
-    //  tone(speaker, 1000, 500);
+      tone(speaker, 1000, 500);
       servo.write(120);
       delay(1000);
     }
