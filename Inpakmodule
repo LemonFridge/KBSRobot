@@ -72,7 +72,7 @@ void loop() {
       doos1R = Status;              //tested and approved!!
       doos2R = Status;
       signaal = false;
-    
+
     }
 
     else if (Status == 1) {
@@ -80,7 +80,6 @@ void loop() {
       digitalWrite(motorrichting1, HIGH);
       analogWrite(motorsnelheid2, 210);
       digitalWrite(motorrichting2, HIGH);
-      Serial.println("0");
       scanning = true;
     }
 
@@ -91,7 +90,6 @@ void loop() {
       analogWrite(motorsnelheid2, 0);
       digitalWrite(motorrichting2, LOW);
       scanning = false;
-      Serial.println("0");
     }
 
     else if (Status == 3) { //color blue
@@ -101,7 +99,7 @@ void loop() {
       blokKleur = 2;
     }
 
-    else if (Status == 5) { //maximum box capacity signal 
+    else if (Status == 5) { //maximum box capacity signal
       signaal = true;
     }
   }
@@ -121,23 +119,23 @@ void scan () {
 
   // Convert the time into a distance
   ultrasoon = (duration / 2) ;
-  
+
   //Serial.print(ultrasoon);
-  
-   if (ultrasoon < 115) {
+
+  if (ultrasoon < 115  && (blokKleur == 1 || blokKleur == 2)) {
     Serial.println("3");//blok is 3 hoog
     blok = 3;
     binPacking();
-  } else if (ultrasoon < 150 && ultrasoon > 115) {
+  } if (ultrasoon < 150 && ultrasoon > 115 && (blokKleur == 1 || blokKleur == 2)) {
     Serial.println("2"); //blok is 2 hoog
     blok = 2;
     binPacking();
-  } else if((ultrasoon > 150 && blokKleur == '1') || (ultrasoon > 150 && blokKleur == '2')){
+  } if ((ultrasoon > 150 && blokKleur == 1) || (ultrasoon > 150 && blokKleur == 2)) {
     Serial.println("1"); //blok is 1 hoog
     blok = 1;
     binPacking();
   }
-  
+
   //scanning logic here
   // call after succesful scan binPacking();
 
@@ -145,48 +143,48 @@ void scan () {
 
 
 void binPacking() {
-  if (blokKleur == '1') { 
+  if (blokKleur == 1) {
 
     if (doos1B - blok >= 0) {
 
       doos1B = doos1B - blok;
-      Servo1.write(0);  
+      Servo1.write(0);
       Serial.println("6"); // doos1 rood ++
-      
+
     } else if (doos2B - blok >= 0) {
 
       doos2B = doos2B - blok;
-      Servo1.write(45); 
+      Servo1.write(45);
       Serial.println("7"); // doos2 rood ++
 
-    } else { 
-    
+    } else {
+
       Serial.println("4"); //dozen blauw zijn vol
-      
+
     }
 
-  } else { 
+  } else {
 
     if (doos1R - blok >= 0) {
 
       doos1R = doos1R - blok;
-      Servo2.write(45);  
+      Servo2.write(45);
 
       Serial.println("8"); // doos 1 blauw ++
 
     } else if (doos2R - blok >= 0) {
 
       doos2R = doos2R - blok;
-      Servo2.write(0);  
+      Servo2.write(0);
 
       Serial.println("9"); //doos 2 blauw ++
 
-    } else { 
-      
+    } else {
+
       Serial.println("5"); //dozen rood zijn vol
-      
+
     }
-  }  
+  }
   blok = 0;
   blokKleur = 0;
   delay(250);
