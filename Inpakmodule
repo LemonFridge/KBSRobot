@@ -148,14 +148,14 @@ void binPacking() {
     if (doos1B - blok >= 0) {
 
       doos1B = doos1B - blok;
-      Servo1.write(0);
-      Serial.println("6"); // doos1 rood ++
+      Servo1.write(65);
+      Serial.println("6"); // doos1 blauw ++
 
     } else if (doos2B - blok >= 0) {
 
       doos2B = doos2B - blok;
-      Servo1.write(45);
-      Serial.println("7"); // doos2 rood ++
+      Servo1.write(0);
+      Serial.println("7"); // doos2 blauw ++
 
     } else {
 
@@ -168,16 +168,16 @@ void binPacking() {
     if (doos1R - blok >= 0) {
 
       doos1R = doos1R - blok;
-      Servo2.write(45);
+      Servo2.write(0);
 
       Serial.println("8"); // doos 1 blauw ++
 
     } else if (doos2R - blok >= 0) {
 
       doos2R = doos2R - blok;
-      Servo2.write(0);
+      Servo2.write(45);
 
-      Serial.println("9"); //doos 2 blauw ++
+      Serial.println("9"); //doos 2 rood ++
 
     } else {
 
