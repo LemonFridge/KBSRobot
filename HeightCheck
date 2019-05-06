@@ -1,3 +1,4 @@
+//We now use the "Ultrasoon" file for the heightcheck, because the HeightCheck with the Optical Detector was very unstable.
 #define L1 A1
 #define L2 A2
 #define L3 A3
