@@ -102,6 +102,41 @@ void loop() {
   }
 }
 
+void scan () {
+
+  while (i < 33) {
+
+    digitalWrite(trigPin, LOW);
+    delay(5);
+    digitalWrite(trigPin, HIGH);
+    delay(10);
+    digitalWrite(trigPin, LOW);
+
+    duration = pulseIn(echoPin, HIGH);
+    ultrasoon = (duration / 2);
+
+    if (ultrasoon < 185) {
+      b3 = true;
+      blok = 3;
+      i = 32;
+      Serial.println("3");
+      binPacking();
+    }
+    
+    i++;
+  }
+  
+  if(!b3){
+    blok = 1;
+    Serial.println("1");
+    binPacking();
+  }
+  blok = 0;
+  blokKleur = 0;
+  b3 = false;
+  
+}
+
 void binPacking() {
   if (blokKleur == 1) {
     
@@ -144,37 +179,5 @@ void binPacking() {
       Serial.println("5"); //dozen rood zijn vol
 
     }
-  }
-  blok = 0;
-  blokKleur = 0;
-  b3 = false;
-}
-
-void scan () {
-
-  while (i < 33) {
-
-    digitalWrite(trigPin, LOW);
-    delay(5);
-    digitalWrite(trigPin, HIGH);
-    delay(10);
-    digitalWrite(trigPin, LOW);
-
-    duration = pulseIn(echoPin, HIGH);
-    ultrasoon = (duration / 2);
-
-    if (ultrasoon < 150) {
-      b3 = true;
-      blok = 3;
-      i = 32;
-      binPacking();
-    }
-    
-    i++;
-  }
-  
-  if(!b3){
-    blok = 1;
-    binPacking();
   }
 }
