@@ -76,6 +76,14 @@ void loop() {
 
     }
 
+    if (Status == 0) {
+      
+      doos1B = maxBox;
+      doos2B = maxBox;
+      doos1R = maxBox;              //tested and approved!!
+      doos2R = maxBox;
+    }
+
     else if (Status == 1) {
       analogWrite(motorsnelheid1, 210);
       digitalWrite(motorrichting1, HIGH);
