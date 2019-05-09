@@ -35,8 +35,9 @@ byte doos2B;
 byte doos1R;
 byte doos2R;
 
+byte maxBox;
+
 boolean signaal;
-boolean b3;
 
 int i;
 
@@ -55,6 +56,7 @@ void setup() {
   pinMode(trigPin, OUTPUT);
   pinMode(echoPin, INPUT);
 
+
 }
 
 void loop() {
@@ -69,6 +71,8 @@ void loop() {
       doos1R = Status;              //tested and approved!!
       doos2R = Status;
       signaal = false;
+
+      maxBox = Status;
 
     }
 
@@ -104,7 +108,7 @@ void loop() {
 
 void scan () {
 
-  while (i < 33) {
+  while (i < 43) {
 
     digitalWrite(trigPin, LOW);
     delay(5);
@@ -115,31 +119,28 @@ void scan () {
     duration = pulseIn(echoPin, HIGH);
     ultrasoon = (duration / 2);
 
-    if (ultrasoon < 185) {
-      b3 = true;
+    if (ultrasoon > 216) {
       blok = 3;
-      i = 32;
-      Serial.println("3");
-      binPacking();
+      i = 42;
+    } else {
+      blok = 1;
     }
-    
     i++;
   }
-  
-  if(!b3){
-    blok = 1;
+
+  if (blok == 3) {
+    Serial.println("3");
+  } else {
     Serial.println("1");
-    binPacking();
   }
-  blok = 0;
-  blokKleur = 0;
-  b3 = false;
-  
+
+  binPacking();
+
 }
 
 void binPacking() {
   if (blokKleur == 1) {
-    
+
     if (doos1B - blok >= 0) {
 
       doos1B = doos1B - blok;
@@ -156,6 +157,8 @@ void binPacking() {
 
       Serial.println("4"); //dozen blauw zijn vol
 
+      doos1B = maxBox;
+      doos2B = maxBox;
     }
 
   } else {
@@ -178,6 +181,11 @@ void binPacking() {
 
       Serial.println("5"); //dozen rood zijn vol
 
+      doos1R = maxBox;
+      doos2R = maxBox;
     }
   }
+  blok = 0;
+  blokKleur = 0;
+  i = 0;
 }
