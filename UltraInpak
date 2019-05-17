@@ -30,6 +30,8 @@ byte blok;
 char blokKleur; // Als het nummer van de Java Applicatie voor servoKleur 1 is, is de kleur blauw. Als het 2 is, is de kleur rood.
 byte Status;
 
+boolean firstStart = true;
+
 byte doos1B;
 byte doos2B;
 byte doos1R;
@@ -55,7 +57,7 @@ void setup() {
 
   Servo1.write(121);
   Servo2.write(125);
-  
+
   //servo1.write(90); midden
   //servo2.write(90); midden
 
@@ -74,23 +76,24 @@ void loop() {
 
     Status = Serial.read();
 
-    if (signaal) {
-      doos1B = Status;
-      doos2B = Status;
-      doos1R = Status;              //tested and approved!!
-      doos2R = Status;
-      signaal = false;
+    if (signaal && firstStart) {
 
-      maxBox = Status;
+        firstStart = false;
+        signaal = false;
 
+        doos1B = Status;
+        doos2B = Status;
+        doos1R = Status;              //tested and approved!!
+        doos2R = Status;
+
+        maxBox = Status;
+      
     }
 
-    if (Status == 0) {
+    else if (Status == 0) {
 
-      doos1B = maxBox;
-      doos2B = maxBox;
-      doos1R = maxBox;              //tested and approved!!
-      doos2R = maxBox;
+      firstStart = true;
+
     }
 
     else if (Status == 1) {
@@ -178,7 +181,7 @@ void binPacking() {
     } else if (doos2B - blok >= 0) {
 
       doos2B = doos2B - blok;
-      Servo1.write(66);
+      Servo1.write(83);
       Serial.println("7"); // doos2 blauw ++
 
     } else {
