@@ -13,7 +13,7 @@ int speaker = 2;
 int redfrequency = 0;
 int bluefrequency = 0;
 
-byte Status;
+byte Status = 2;
 int i;
 
 Servo servo;
@@ -34,7 +34,7 @@ void setup() {
   // Setting frequency-scaling to 20%
   digitalWrite(S0, HIGH);
   digitalWrite(S1, LOW);
-  servo.write(60);
+  servo.write(50);
   Serial.begin(9600);
 }
 void loop() {
@@ -42,7 +42,14 @@ void loop() {
   if (Serial.available() > 0) {
   Status = Serial.read();
   }
-  
+
+  if (Status == 0) {
+      analogWrite(motorsnelheid, 215);
+      digitalWrite(motorrichting, LOW);
+      delay(4000);
+      Status = 2;
+      }
+    
   // Status = 1;
   if (Status == 1) {
     if (i < 1) {
@@ -66,17 +73,18 @@ void loop() {
     delay(10);
 
    
-    if ((redfrequency > 0) && (redfrequency < 2300)) {
+    if ((redfrequency > 0) && (redfrequency < 1900)) {
       Serial.println("1");
+      
       tone(speaker, 1000, 500);
-      servo.write(60);
+      servo.write(50);
       delay(1000);
     }
     
     if ((bluefrequency < 2800 ) && (redfrequency > 2400)) {
       Serial.println("2");
       tone(speaker, 1000, 500);
-      servo.write(125);
+      servo.write(115);
       delay(1000);
     }
 
