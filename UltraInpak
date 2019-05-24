@@ -76,20 +76,23 @@ void loop() {
 
     Status = Serial.read();
 
-    if (signaal) {
-      signaal = false;
-      if (firstStart) {
+    if (signaal && firstStart) {
+
         firstStart = false;
-        
+        signaal = false;
+
         doos1B = Status;
         doos2B = Status;
         doos1R = Status;              //tested and approved!!
         doos2R = Status;
 
         maxBox = Status;
-      }
+      
     }
 
+    else if(signaal){
+      signaal = false;
+    }
 
     else if (Status == 0) {
 
@@ -97,6 +100,20 @@ void loop() {
 
     }
 
+    else if (Status == 1) {
+      analogWrite(motorsnelheid1, 210);
+      digitalWrite(motorrichting1, HIGH);
+      analogWrite(motorsnelheid2, 210);
+      digitalWrite(motorrichting2, HIGH);
+    }
+
+
+    else if (Status == 2) {
+      analogWrite(motorsnelheid1, 0);
+      digitalWrite(motorrichting1, LOW);
+      analogWrite(motorsnelheid2, 0);
+      digitalWrite(motorrichting2, LOW);
+    }
 
     else if (Status == 3) { //color blue
       blokKleur = 1;
@@ -126,7 +143,7 @@ void loop() {
 
 void scan () {
 
-  while (i < 43) {
+  while (i < 80) {
 
     digitalWrite(trigPin, LOW);
     delay(5);
@@ -137,9 +154,9 @@ void scan () {
     duration = pulseIn(echoPin, HIGH);
     ultrasoon = (duration / 2);
 
-    if (ultrasoon > 222) {
+    if (ultrasoon > 215) {
       blok = 3;
-      i = 42;
+      i = 79;
     } else {
       blok = 1;
     }
@@ -168,7 +185,7 @@ void binPacking() {
     } else if (doos2B - blok >= 0) {
 
       doos2B = doos2B - blok;
-      Servo1.write(90);
+      Servo1.write(83);
       Serial.println("7"); // doos2 blauw ++
 
     } else {
